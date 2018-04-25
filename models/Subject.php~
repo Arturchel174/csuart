@@ -63,10 +63,4 @@ class Subject extends \yii\db\ActiveRecord
     {
         return $this->hasMany(Visit::className(), ['subject_id' => 'id']);
     }
-    
-    public function getStudents()
-    {
-    		return $this->hasMany(Students::className(), ['id' => 'students_id'])
-    			->viaTable('visit', ['subject_id' => 'id']);    
-    }
 }

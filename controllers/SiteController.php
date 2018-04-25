@@ -50,51 +50,20 @@ class SiteController extends Controller
             'subject' => $subject, 'post_id'
         ]);
     }
-    public function actionPp($id = null){
-      $subject1 = Visit::find()
-             ->where(['subject_id' => $id,])
-             ->select(['students_id'])
-             ->column();
-
-      $subject14 = Visit::find()
-             ->where(['subject_id' => $id,])
-             ->select(['id'])
-             ->column();
-
-      $students=$subject14;
+    public function actionPp($id = null,$ids=1){
+      $subject = Subject::find()->select(['subject', 'id'])->indexBy('id')->column();
+      $subject1 = Subject::findOne($ids);
+      $group = Group::find()->select(['group', 'id'])->indexBy('id')->column();
+      return $this -> render('pp', compact('subject1','id','group', 'post_id','subject', 'post_id'));
 
 
-      $subject4=$id;
-      $id=$subject1;
-      $subject = Students::find()
-              ->where(['id' => $id,])
-              ->select(["CONCAT(name, ' ',sur_name, ' ',patronymic_name)", 'id'])
-              ->column();
-      $id=$subject4;
-      $subject3 = Visit::find()
-                ->where(['subject_id' => $id,])
-                ->select(["plus_id"])
-                ->column();
-      $id=$subject3;
-
-      $subject2 = Plus::find()
-              ->where(['id' => $id,])
-              ->select(['operation'])
-              ->column();
-
-      $data = [];
-
-      foreach ($students as $value)
-      {
-        $model = new Visit;
-        $model->students_id = $value;
-        $model->plus_id = $value;
-        $data[] = $model;
-      }
-
-      print_r($data);
-
-    //  return $this -> render('pp', compact('subject','subject2'));
+      //
+      // foreach ($students as $value)
+      // {
+      //   $model = new Visit;
+      //   $model->students_id = $value;
+      //   $model->plus_id = $value;
+      //   $data[] = $model;
     }
 
     public function actionPrtable(){
@@ -117,26 +86,20 @@ class SiteController extends Controller
              ->column();
       return $this -> render('pr', compact('teach'));
     }
-   public function actionGg($id = null){
+   public function actionGg($id = null,$ids=50){
      $student = Students::find()
             ->where(['group_id' => $id,])->all();
-            //->select(["CONCAT(name, ' ',sur_name, ' ',patronymic_name)", 'id'])
-            //->column();
-     //$group = Group::findOne($id);
-     //$student = $group->students;
-     // $student = Students::find()
-     //    ->select(['group_id'])
-     //    ->orderBy('id')
-     //    ->all();
-     // $student = Students::find($id)->select(["CONCAT(name, ' ',sur_name, ' ',patronymic_name)", 'id'])->indexBy($id)->column();
-     //$student = Students::find()->where(['group_id'=>$id])->all();
-
-     return $this -> render('gg', compact('student'));
+     $student1 = Students::findOne($ids);
+     $group = Group::find()->select(['group', 'id'])->indexBy('id')->column();
+     return $this -> render('gg', compact('student1','student','id','group', 'post_id'));
    }
-   public function actionSt($id = null)
+   public function actionSt($id = null,$ids=1)
    {
-		$student = Students::findOne($id);  
-		return $this -> render('st', compact('student'));
+     $student = Students::find()
+            ->where(['group_id' => $id,])->all();
+     $student1 = Students::findOne($ids);
+     $group = Group::find()->select(['group', 'id'])->indexBy('id')->column();
+     return $this -> render('st', compact('student1','student','id','group', 'post_id'));
    }
     public function actions()
     {

@@ -63,30 +63,29 @@ class students extends \yii\db\ActiveRecord
     {
         return $this->sur_name.' '.$this->name;
     }
-    
+
+
     public function getTotal()
     {
     	  $count = Visit::find()->where(['students_id' => $this->id])->count();
     	  $success = Visit::find()->where(['students_id' => $this->id, 'plus_id' => 1])->count();
-    	  return round($success / $count, 2) * 100 . '%';
+    	  if($count == 0) return 'Нет информации по студенту.';
+			else return round($success / $count, 2) * 100 . '%';
     }
-    
+
+
 	public function getSubjects()
 	{
-		return Visit::find()
-			->select('subject_id')
-			->where(['students_id' => $this->id])
-			->groupBy(['subject_id'])
-			->asArray()
-			->all();	
-	}    
-    
+		return $this->hasMany(Subject::className(), ['id' => 'subject_id'])
+			->viaTable'visit', ['students_id' => 'id']);
+	}
+
     public function totalSubject($subject_id = null)
     {
-    	if($subject_id == null) return 'Not set';
+    	if($subject_id == null) return 'Нет информации';
 			$count = Visit::find()->where(['students_id' => $this->id, 'subject_id' => $subject_id])->count();
 			$success = Visit::find()->where(['students_id' => $this->id, 'subject_id' => $subject_id, 'plus_id' => 1])->count();
-			if($count == 0) return 'Nor set';
+			if($count == 0) return 'Нет информации.';
 			else return round($success / $count, 2) * 100 . '%';
     }
 }
