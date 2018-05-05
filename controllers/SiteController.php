@@ -44,63 +44,81 @@ class SiteController extends Controller
         ];
     }
 
-    public function actionPtable(){
-          $subject = Subject::find()->select(['subject', 'id'])->indexBy('id')->column();
-        return $this->render('ptable', [
-            'subject' => $subject, 'post_id'
-        ]);
-    }
-    public function actionPp($id = null,$ids=1){
-      $subject = Subject::find()->select(['subject', 'id'])->indexBy('id')->column();
-      $subject1 = Subject::findOne($ids);
-      $group = Group::find()->select(['group', 'id'])->indexBy('id')->column();
-      return $this -> render('pp', compact('subject1','id','group', 'post_id','subject', 'post_id'));
 
 
-      //
-      // foreach ($students as $value)
-      // {
-      //   $model = new Visit;
-      //   $model->students_id = $value;
-      //   $model->plus_id = $value;
-      //   $data[] = $model;
-    }
-
-    public function actionPrtable(){
-          $teach = Teacher::find()->select(["CONCAT(teacher_sur_name, ' ',teacher_name, ' ',teacher_patronymic_name)", 'id'])->indexBy('id')->column();
-        return $this->render('prtable', [
-            'teach' => $teach, 'post_id'
-        ]);
-    }
-
-    public function actionGtable(){
-          $group = Group::find()->select(['group', 'id'])->indexBy('id')->column();
-        return $this->render('gtable', [
-            'group' => $group, 'post_id'
-        ]);
-    }
-    public function actionPr($id = null){
-      $teach = Teacher::find()
-             ->where(['id' => $id,])
-             ->select(["CONCAT(teacher_sur_name, ' ',teacher_name, ' ',teacher_patronymic_name)", 'id'])
+    public function actionSubjectTable(){
+          $subject = Subject::find()
+             ->select(['subject', 'id'])
+             ->indexBy('id')
              ->column();
-      return $this -> render('pr', compact('teach'));
+        return $this->render('subject-table', ['subject' => $subject, 'post_id']);
     }
-   public function actionGg($id = null,$ids=50){
+
+
+
+    public function actionSubjectTableStat($id = null,$ids=1){
+      $subject = Subject::find()
+             ->select(['subject', 'id'])
+             ->indexBy('id')
+             ->column();
+      $subjectstat = Subject::findOne($ids);
+      return $this -> render('subject-table-stat', compact('subjectstat','id','subject'));
+    }
+
+    public function actionTeacherTable(){
+        $teacher = Teacher::find()
+         ->select(["CONCAT(teacher_sur_name, ' ',teacher_name, ' ',teacher_patronymic_name)", 'id'])
+         ->indexBy('id')
+         ->column();
+        return $this->render('teacher-table', ['teacher' => $teacher]);
+    }
+    public function actionTeacherTableStat($id = null,$ids=1){
+      $teacher = Teacher::find()
+             ->select(["CONCAT(teacher_sur_name, ' ',teacher_name, ' ',teacher_patronymic_name)", 'id'])
+             ->indexby('id')
+             ->column();
+      $teacherstat= Teacher::findOne($ids);
+      return $this -> render('teacher-table-stat', compact('teacherstat','id','teacher'));
+    }
+
+
+
+    public function actionGroupTable(){
+         $group = Group::find()
+             ->select(['group', 'id'])
+             ->indexBy('id')
+             ->column();
+        return $this->render('group-table', ['group' => $group]);
+    }
+
+
+
+   public function actionGroupStudentTable($id = null,$ids=1){
      $student = Students::find()
-            ->where(['group_id' => $id,])->all();
-     $student1 = Students::findOne($ids);
-     $group = Group::find()->select(['group', 'id'])->indexBy('id')->column();
-     return $this -> render('gg', compact('student1','student','id','group', 'post_id'));
+             ->where(['group_id' => $id,])->all();
+     $group = Group::find()
+             ->select(['group', 'id'])
+             ->indexBy('id')
+             ->column();
+     return $this -> render('group-student-table', compact('student','id','group'));
    }
-   public function actionSt($id = null,$ids=1)
+
+
+
+   public function actionGroupStudentTableStat($id = null, $ids=1)
    {
-     $student = Students::find()
-            ->where(['group_id' => $id,])->all();
-     $student1 = Students::findOne($ids);
-     $group = Group::find()->select(['group', 'id'])->indexBy('id')->column();
-     return $this -> render('st', compact('student1','student','id','group', 'post_id'));
+     $student =  Students::find()
+             ->where(['group_id' => $id,])
+             ->all();
+     $studentstat = Students::findOne($ids);
+     $group = Group::find()
+             ->select(['group','id'])
+             ->indexBy('id')
+             ->column();
+     return $this -> render ('group-student-table-stat', compact('studentstat','student','id','group'));
    }
+
+
     public function actions()
     {
         return [
@@ -166,19 +184,12 @@ class SiteController extends Controller
         $model = new ContactForm();
         if ($model->load(Yii::$app->request->post()) && $model->contact(Yii::$app->params['adminEmail'])) {
             Yii::$app->session->setFlash('contactFormSubmitted');
-
             return $this->refresh();
         }
-        return $this->render('contact', [
-            'model' => $model,
-        ]);
+        return $this->render('contact', ['model' => $model,]);
     }
 
-    /**
-     * Displays about page.
-     *
-     * @return string
-     */
+
     public function actionAbout()
     {
         return $this->render('about');

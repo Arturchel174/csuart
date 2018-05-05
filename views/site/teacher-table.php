@@ -6,10 +6,10 @@ echo '<div class="col-lg-3"><table class="table table-bordered table-striped">
     <th>Предметы</th>
   </tr>
 </thead>';
-foreach ($subject as $key => $value)
+foreach ($teacher as $key => $value)
   {
     echo "<tr>";
-    $url = Url::toRoute(['site/pp', 'id' => $key]);
+    $url = Url::toRoute(['site/teacher-table-stat', 'ids' => $key]);
   echo "<td>".'<a href="'.$url.'">'.$value.'</a><br>'."</td></tr>";
   }
   echo '</table>

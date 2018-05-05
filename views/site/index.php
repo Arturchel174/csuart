@@ -2,9 +2,9 @@
 use yii\helpers\Url;
 /* @var $this yii\web\View */
 
-  $urlOne = Url::toRoute(['site/gtable']);
-  $urlTwo = Url::toRoute(['site/ptable']);
-  $urlThree = Url::toRoute(['site/prtable']);
+  $urlOne = Url::toRoute(['site/group-table']);
+  $urlTwo = Url::toRoute(['site/subject-table']);
+  $urlThree = Url::toRoute(['site/teacher-table']);
 
 $this->title = 'My Yii Application';
 ?>

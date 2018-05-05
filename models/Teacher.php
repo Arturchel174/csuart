@@ -56,4 +56,21 @@ class Teacher extends \yii\db\ActiveRecord
         $teacher_patronymic_name = mb_substr($patronymic_name,0,1).'.';
         return $teacher_name.$teacher_patronymic_name.' '.$this->teacher_sur_name;
     }
+
+    public function getTeacher()
+    {
+        return $this->teacher_sur_name.' '.$this->teacher_name.' '.$this->teacher_patronymic_name;
+    }
+
+    public function getTotalteacher()
+    {
+        $count = Visit::find()
+        ->where(['teacher_id' => $this->id])
+        ->count();
+        $success = Visit::find()
+        ->where(['teacher_id' => $this->id, 'plus_id' => 1])
+        ->count();
+        if($count == 0) return 'Нет информации по преподавателю.';
+      else return round($success / $count, 2) * 100 . '%';
+    }
 }
