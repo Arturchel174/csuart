@@ -10,7 +10,7 @@
   foreach ($group as $key => $value)
     {
       echo "<tr>";
-      $url = Url::toRoute(['site/group-student-table', 'id' => $key]);
+      $url = Url::toRoute(['statistic/group-student-table', 'id' => $key]);
       echo "<td>".'<a href="'.$url.'">'.$value.'</a><br>'."</td></tr>";
     }
     echo '</table>

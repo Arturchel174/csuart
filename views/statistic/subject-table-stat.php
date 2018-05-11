@@ -9,9 +9,15 @@ echo '<div class="col-lg-3"><table class="table table-bordered table-striped">
 foreach ($subject as $key => $value)
   {
     echo "<tr>";
-    $url = Url::toRoute(['site/subject-table-stat', 'ids' => $key]);
+    $url = Url::toRoute(['statistic/subject-table-stat', 'ids' => $key]);
   echo "<td>".'<a href="'.$url.'">'.$value.'</a><br>'."</td></tr>";
   }
   echo '</table>
   </div>';
 ?>
+
+
+<div class="col-lg-5" style="position: relative;float:left; margin-left:10px;">
+<h1 style="margin-top:0px;"><?= $subjectstat->sub ?></h1>
+<h3><?= 'Общая посещаемость - '.$subjectstat->totalSubject ?></h3>
+</div>
