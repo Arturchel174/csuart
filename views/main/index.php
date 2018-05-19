@@ -23,9 +23,9 @@ use kartik\widgets\DatePicker;
         Yii::$app->session->getFlash('success');
     }?>
     <?php $form = ActiveForm::begin(['id' => 'FirstForm',
-    'action' =>['main/get']]); ?>
+    'action' =>['main/getbridge']]); ?>
 
-    <?= $form->field($model, 'teacher')->label('Преподаватель')->dropDownList(Teacher::find()->select(["CONCAT(teacher_name, ' ',teacher_sur_name)", 'id'])->indexBy('id')->column(), ['prompt' => '']) ?>
+    <?= $form->field($model, 'teacher')->label('Преподаватель')->dropDownList(Teacher::find()->select(["CONCAT(teacher_sur_name, ' ',teacher_name, ' ',teacher_patronymic_name)", 'id'])->indexBy('id')->column(), ['prompt' => '']) ?>
     <?= $form->field($model, 'group')->label('Группа')->dropDownList(Group::find()->select(['group', 'id'])->indexBy('id')->column(), ['prompt' => '']) ?>
     <?= $form->field($model, 'subject')->label('Предмет')->dropDownList(Subject::find()->select(['subject', 'id'])->indexBy('id')->column(), ['prompt' => '']) ?>
     <?= $form->field($model, 'date')->label('Дата')->widget(DatePicker::classname(), [

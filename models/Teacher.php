@@ -31,6 +31,7 @@ class Teacher extends \yii\db\ActiveRecord
         return [
             [['teacher_sur_name', 'teacher_name', 'teacher_patronymic_name'], 'string', 'max' => 255],
             [['teacher_phone_number'], 'string', 'max' => 13],
+           [['teacher_sur_name', 'teacher_name', 'teacher_patronymic_name'],'required']
         ];
     }
 
@@ -41,10 +42,10 @@ class Teacher extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'teacher_sur_name' => 'Teacher Sur Name',
-            'teacher_name' => 'Teacher Name',
-            'teacher_patronymic_name' => 'Teacher Patronymic Name',
-            'teacher_phone_number' => 'Teacher Phone Number',
+            'teacher_sur_name' => 'Фамилия',
+            'teacher_name' => 'Имя',
+            'teacher_patronymic_name' => 'Отчество',
+            'teacher_phone_number' => 'Номер телефона',
         ];
     }
 
@@ -54,7 +55,7 @@ class Teacher extends \yii\db\ActiveRecord
         $patronymic_name = $this->teacher_patronymic_name;
         $teacher_name =  mb_substr($name,0,1).'.';
         $teacher_patronymic_name = mb_substr($patronymic_name,0,1).'.';
-        return $teacher_name.$teacher_patronymic_name.' '.$this->teacher_sur_name;
+        return $this->teacher_sur_name.' '.$teacher_name.$teacher_patronymic_name;
     }
 
     public function getTeacher()

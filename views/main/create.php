@@ -8,7 +8,7 @@ use yii\captcha\Captcha;
 
 <?php
     $number;
-    echo '<div class="container">
+    echo '<div class="col-lg-6">
     <h2>Сверка данных</h2>';
 ?>
 <p>
@@ -28,15 +28,18 @@ echo '<h4>'.date_format($date_view, 'j F Y').'</h4>';
     echo '<table class="table table-bordered table-striped">
         <thead>
         <tr>
+        <th width="30px">№</th>
             <th>Студент</th>
             <th>Посещаемость</th>
         </tr>
         </thead>
         <tbody>
         ';
+    $i = 1;
         foreach ($dataOne as $data)
         {
             echo '<tr>';
+            echo '<td>'.$i++.'</td>';
             echo '<td>'.$data['student'].'</td>';
             echo '<td>'.$data['plus'].'</td>';
             echo '</tr>';
@@ -44,18 +47,36 @@ echo '<h4>'.date_format($date_view, 'j F Y').'</h4>';
 
         echo '</tbody>
     </table>';?>
+<?= Html::beginForm(['main/finish'], 'post');?>
+    <p><?= Html::submitButton('Отправить код смс', ['class' => 'btn btn-secondary',
+    'value' => '1',
+    'type' => 'button','name' => 'sms']) ?></p>
+
+    <div class="input-group">
+
+        <?
+
+        echo '<span class="input-group-btn">';
+        echo Html::submitButton('Назад', ['class' => 'btn btn-secondary', 'value' => 'back',
+                'type' => 'button','name' => 'back']).'</span>';
+
+        echo Html::textInput('code',null,['class' => 'form-control','placeholder'
+        => 'Код из смс...']);
+
+        echo '<span class="input-group-btn">';
+        echo Html::submitButton('Дальше', ['class' => 'btn btn-secondary','type' => 'button']).'</span>';
 
 
-<?php $form = ActiveForm::begin(['id' => 'ThirdForm','action' => ['main/finish']]);?>
 
-<?php echo $form->field($dd, "verifyCode")->widget(Captcha::className()); ?>
+        //echo '<div class="form-group">'.Html::submitButton('Дальше', ['class' => 'btn btn-success']).'</div>';
+        ?>
+    </div>
 
-<div class="form-group">
-    <?= Html::submitButton('Дальше', ['class' => 'btn btn-success']) ?>
+
+<?= Html::endForm()?>
+
+
+
 </div>
-<?php  ActiveForm::end(); ?>
-
-</div>
-
 
 

@@ -1,0 +1,9 @@
+<?php
+
+?>
+<h1><?= $student->fio ?></h1>
+<h2><?= $student->total ?></h2>
+<h3><?= $student->totalSubject(2) ?></h3>
+<?php foreach($student->subjects as $x) : ?>
+	<?= $student->totalSubject($x['subject_id']) ?><br />
+<?php endforeach; ?>

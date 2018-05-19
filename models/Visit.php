@@ -37,7 +37,7 @@ class Visit extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['students_id', 'teacher_id', 'subject_id', 'plus_id'],  'required'],
+            [['students_id', 'teacher_id', 'subject_id', 'plus_id', 'date'],  'required'],
             [['date'], 'safe'],
             [['students_id'], 'exist', 'skipOnError' => true, 'targetClass' => Students::className(), 'targetAttribute' => ['students_id' => 'id']],
             [['subject_id'], 'exist', 'skipOnError' => true, 'targetClass' => Subject::className(), 'targetAttribute' => ['subject_id' => 'id']],
@@ -53,11 +53,11 @@ class Visit extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'students_id' => 'Students ID',
-            'teacher_id' => 'Teacher ID',
-            'subject_id' => 'Subject ID',
-            'plus_id' => 'Plus ID',
-            'date' => 'Date',
+            'students_id' => 'Студент',
+            'teacher_id' => 'Преподаватель',
+            'subject_id' => 'Предмет',
+            'plus_id' => 'Посещаемость',
+            'date' => 'Дата',
 
         ];
     }

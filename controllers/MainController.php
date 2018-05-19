@@ -20,11 +20,29 @@ use lowbase\sms\models\Sms;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\helpers\ArrayHelper;
+use yii\filters\AccessControl;
 use Yii;
 
 
 class MainController extends Controller
 {
+    public function behaviors()
+    {
+        return [
+            'verbs' => [
+                'class' => VerbFilter::className(),
+                'actions' => [
+                    'getbridge' => ['post'],
+                    'get' => ['post'],
+                    'bridge' => ['post'],
+                    'create' => ['post'],
+                    'finish' => ['post'],
+                ],
+            ],
+        ];
+    }
+
+
 
     public function actionIndex()
     {
@@ -51,6 +69,7 @@ class MainController extends Controller
         }
 
 
+
         $this->view->title = 'Форма';
         return $this->render('index', [
 
@@ -60,10 +79,22 @@ class MainController extends Controller
 
     }
 
+    public function actionGetbridge()
+    {
+        $items = $_POST['FirstForm'];
+        $session = Yii::$app->session;
+        $session->set('FirstForm', $items);
+        $random = rand(1000,9999);
+        $code = (string)$random;
+        $session2 = Yii::$app->session;
+        $session2->set('code', $code);
+        return Yii::$app->runAction('main/get');
+    }
+
     public function actionGet()
     {
 
-        $items = $_POST['FirstForm'];
+        $items = Yii::$app->session->get('FirstForm');
         $teacher = $items['teacher'];
         $group = $items['group'];
         $subject = $items['subject'];
@@ -91,10 +122,29 @@ class MainController extends Controller
             'student' => $student_table, 'visit' => $visit, 'visits' => $visits,
         ]);
     }
+
+     public function actionBridge()
+     {
+       $model = $_REQUEST['Visit'];
+//       $teacher= ArrayHelper::getValue($model, '0.teacher_id');
+//       $teacher_table = Teacher::findOne($teacher);
+//       $sms_teacher = $teacher_table->teacher_phone_number;
+       $session = Yii::$app->session;
+       $session->set('session', $model);
+//       $random = rand(1000,9999);
+//       $code = (string)$random;
+//       $session2 = Yii::$app->session;
+//       $session2->set('code', $code);
+       //$sms =  Yii::$app->sms->sendSms($sms_teacher, $code, true, 1, 5);
+       //return Yii::$app->runAction('main/create').$sms;
+         if(!empty($model)){return Yii::$app->runAction('main/create');}
+     }
+
    public function actionCreate()
    {
-        $dd = new FirstForm;
-        $model = $_POST['Visit'];
+
+        $model = Yii::$app->session->get('session');
+        $code = Yii::$app->session->get('code');
         $subject = ArrayHelper::getValue($model, '0.subject_id');
         $teacher= ArrayHelper::getValue($model, '0.teacher_id');
         $student = ArrayHelper::getValue($model, '0.students_id');
@@ -103,13 +153,9 @@ class MainController extends Controller
         $teacher_table = Teacher::findOne($teacher);
         $subject_table = Subject::findOne($subject);
         $group_table = $student_table->group;
-        $sms_teacher = $teacher_table->teacher_phone_number;
-
 
         $visits = [];
         $dataOne = [];
-
-       $number = Yii::$app->sms->sendSms($sms_teacher, '1111', true, 1, 5);
 
 
         foreach ($model as $value)
@@ -119,43 +165,78 @@ class MainController extends Controller
             $dataOne[] = ['student'=> $student , 'plus'=> $plus];
         }
 
-       $session = Yii::$app->session;
-
-       $session->set('session', $model);
 
         return $this->render('create', [
             'model' => $model, 'group' => $group_table, 'subject' => $subject_table, 'teacher' => $teacher_table, 'date' => $date,
-            'dataOne' => $dataOne, 'visit' => $visits, 'dd' => $dd, 'number' => $number,
+            'dataOne' => $dataOne, 'visit' => $visits, 'code' => $code,
         ]);
     }
 
+
+
+
+
     public function actionFinish()
     {
-        //$number = Yii::$app->sms->sendSms('+79090911071', 'Тестовое сообщение', true, 1, 5);
 
-        $data = Yii::$app->session->get('session');
-
-
-        foreach ($data as $value)
+        if(!empty($_REQUEST['sms']))
         {
+            $data = Yii::$app->session->get('session');
+            $teacher= ArrayHelper::getValue($data, '0.teacher_id');
+            $teacher_table = Teacher::findOne($teacher);
+            $sms_teacher = $teacher_table->teacher_phone_number;
 
-            $visit = new Visit;
-            $visit->students_id = $value['students_id'];
-            $visit->teacher_id = $value['teacher_id'];
-            $visit->subject_id = $value['subject_id'];
-            $visit->date = $value['date'];
-            $visit->plus_id = $value['plus_id'];
-            $visit->save();
+            $code = Yii::$app->session->get('code');
+            function sms ($sms,$code)
+            {
+                return Yii::$app->sms->sendSms($sms, $code, true, 1, 5);
+            }
+            echo sms($sms_teacher,$code );
+            return Yii::$app->runAction('main/create');
+        }
+
+        if(!empty($_REQUEST['back']))
+        {
+            return Yii::$app->runAction('main/get');
         }
 
 
 
+        $code = $_REQUEST['code'];
+        $true = Yii::$app->session->get('code');
 
-        return $this->render('finish', [
 
-            'visit' => $visit,
+        if($true == $code )
+        {
+            $data = Yii::$app->session->get('session');
 
-        ]);
+
+            foreach ($data as $value)
+            {
+
+                $visit = new Visit;
+                $visit->students_id = $value['students_id'];
+                $visit->teacher_id = $value['teacher_id'];
+                $visit->subject_id = $value['subject_id'];
+                $visit->date = $value['date'];
+                $visit->plus_id = $value['plus_id'];
+                $visit->save();
+            }
+
+            Yii::$app->session->destroy();
+
+            return $this->render('finish', [
+
+                'visit' => $visit,
+
+            ]);
+        }else{ return Yii::$app->runAction('main/create');}
+
+
+
+
+
+
     }
 
 

@@ -29,7 +29,7 @@ AppAsset::register($this);
 <div class="wrap">
     <?php
     NavBar::begin([
-        'brandLabel' => Yii::$app->name,
+        'brandLabel' => "Журнал",
         'brandUrl' => Yii::$app->homeUrl,
         'options' => [
             'class' => 'navbar-inverse navbar-fixed-top',
@@ -38,20 +38,21 @@ AppAsset::register($this);
     echo Nav::widget([
         'options' => ['class' => 'navbar-nav navbar-right'],
         'items' => [
-            ['label' => 'Home', 'url' => ['/site/index']],
-            ['label' => 'About', 'url' => ['/site/about']],
-            ['label' => 'Form', 'url' => ['/main/index']],
-            ['label' => 'Admin', 'items' => [
-                ['label' => 'Group', 'url' => ['/journal/group/index']],
-                ['label' => 'Students', 'url' => ['/journal/students/index']],
-                ['label' => 'Teacher', 'url' => ['/journal/teacher/index']],
-                ['label' => 'Subject', 'url' => ['/journal/subject/index']],
-                ['label' => 'Visit', 'url' => ['/journal/visit/index']],
-//                ['label' => 'Product Tags', 'url' => ['/admin/product-tags/index']],
-            ]],
-            ['label' => 'Contact', 'url' => ['/site/contact']],
+            ['label' => 'Главная', 'url' => ['/main/index']],
+//            ['label' => 'About', 'url' => ['/site/about']],
+//            ['label' => 'Form', 'url' => ['/main/index']],
+            ['label' => 'Админка', 'url' => ['/admin']],
+//            ['label' => 'Admin', 'items' => [
+//                ['label' => 'Group', 'url' => ['/journal/group/index']],
+//                ['label' => 'Students', 'url' => ['/journal/students/index']],
+//                ['label' => 'Teacher', 'url' => ['/journal/teacher/index']],
+//                ['label' => 'Subject', 'url' => ['/journal/subject/index']],
+//                ['label' => 'Visit', 'url' => ['/journal/visit/index']],
+////                ['label' => 'Product Tags', 'url' => ['/admin/product-tags/index']],
+//            ]],
+//            ['label' => 'Contact', 'url' => ['/site/contact']],
             Yii::$app->user->isGuest ? (
-                ['label' => 'Login', 'url' => ['/site/login']]
+                ['label' => 'Вход', 'url' => ['/admin']]
             ) : (
                 '<li>'
                 . Html::beginForm(['/site/logout'], 'post')

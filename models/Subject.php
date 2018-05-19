@@ -29,6 +29,7 @@ class Subject extends \yii\db\ActiveRecord
     {
         return [
             [['subject'], 'string', 'max' => 255],
+            //[['subject'],'required']
         ];
     }
 
@@ -39,7 +40,7 @@ class Subject extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'subject' => 'Subject',
+            'subject' => 'Предмет',
         ];
     }
     public function getSub()

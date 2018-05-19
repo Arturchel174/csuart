@@ -28,7 +28,8 @@ class Group extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['group'], 'string', 'max' => 32],
+            [['group'], 'string',  'max' => 32],
+            [['group'], 'required'],
         ];
     }
 
@@ -39,7 +40,7 @@ class Group extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'group' => 'Group',
+            'group' => 'Группа',
         ];
     }
 

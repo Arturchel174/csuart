@@ -34,6 +34,7 @@ class students extends \yii\db\ActiveRecord
             [['group_id'], 'integer'],
             [['name', 'sur_name', 'patronymic_name'], 'string', 'max' => 255],
             [['group_id'], 'exist', 'skipOnError' => true, 'targetClass' => Group::className(), 'targetAttribute' => ['group_id' => 'id']],
+            [['name', 'sur_name', 'patronymic_name','group_id'], 'required'],
         ];
     }
 
@@ -44,10 +45,10 @@ class students extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'name' => 'Name',
-            'sur_name' => 'Sur Name',
-            'patronymic_name' => 'Patronymic Name',
-            'group_id' => 'Group ID',
+            'name' => 'Имя',
+            'sur_name' => 'Фамилия',
+            'patronymic_name' => 'Отчество',
+            'group_id' => 'Группа',
         ];
     }
 

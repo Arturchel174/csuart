@@ -14,6 +14,16 @@ $config = [
         '@bower' => '@vendor/bower-asset',
         '@npm'   => '@vendor/npm-asset',
     ],
+    'modules' => [
+
+        'admin' => [
+
+            'class' => 'app\modules\admin\Module',
+            'layout' => 'admin',
+
+        ],
+
+    ],
     'components' => [
         'sms' => [
             'class' => 'lowbase\sms\Sms',
@@ -26,25 +36,25 @@ $config = [
                     'password' => '',
                     'order' => 2,
                 ],
-                // http://iqsms.ru/api/api_rest/
-                'iqsmsc_ru_2' => [
-                    'class' => 'lowbase\sms\services\IqmscRuService',
-                    'login' => '...',
-                    'password' => '...',
-                    'order' => 3,
-                ],
+//                // http://iqsms.ru/api/api_rest/
+//                'iqsmsc_ru_2' => [
+//                    'class' => 'lowbase\sms\services\IqmscRuService',
+//                    'login' => '...',
+//                    'password' => '...',
+//                    'order' => 3,
+//                ],
                 // http://smsc.ru/api/
-                'smsc_ru' => [
-                    'class' => 'lowbase\sms\services\SmscRuService',
-                    'login' => '...',
-                    'password' => '...',
-                    'order' => 1
-                ],
+//                'smsc_ru' => [
+//                    'class' => 'lowbase\sms\services\SmscRuService',
+//                    'login' => '...',
+//                    'password' => '...',
+//                    'order' => 1
+//                ],
             ]
         ],
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
-            'cookieValidationKey' => md5(‘asdFw42Q’),
+            'cookieValidationKey' => md5('asdFw42Q'),
         ],
         'cache' => [
             'class' => 'yii\caching\FileCache',

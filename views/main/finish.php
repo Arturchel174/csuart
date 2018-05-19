@@ -5,7 +5,8 @@ use yii\widgets\ActiveForm;
 
 ?>
 <?php
-$number;
 
+
+ echo 'Запись успешно добавлена!';
 
 ?>

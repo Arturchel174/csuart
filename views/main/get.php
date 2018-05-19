@@ -26,23 +26,27 @@ use yii\widgets\ActiveForm;
 
     <div class="visit-form">
 
-        <?php $form = ActiveForm::begin(['id' => 'SecondForm','action' => ['main/create']/*'/index.php?r=main%2Fcreate'*/]);?>
+        <?php $form = ActiveForm::begin(['id' => 'SecondForm','action' => ['main/bridge']/*'/statistics.php?r=main%2Fcreate'*/]);?>
 
         <?php
-        echo '<table class="table table-bordered">
+        echo '<table class="table table-striped table-bordered">
         <thead>
         <tr>
+            <th width="40px">№</th>
             <th>Студент</th>
             <th>Посещаемость</th>
         </tr>
         </thead>
         <tbody>
         ';
+        $i = 1;
         foreach ($visits as $index => $v)
         {
             echo '<tr>';
-            echo '<td>'.$v->students->name.' '.$v->students->sur_name.'</td>';
-            echo '<td>'.$form->field($v, "[$index]plus_id")->dropDownList(Plus::find()->select(['operation', 'id'])->indexBy('id')->column(), ['style' => 'width:150px !important']).'</td>';
+            echo '<td>'.$i++.'</td>';
+            echo '<td>'.$v->students->sur_name.' '.$v->students->name.'</td>';
+            echo '<td>'.$form->field($v, "[$index]plus_id")->dropDownList(Plus::find()->select(['operation', 'id'])
+                    ->indexBy('id')->column(), ['style' => 'width:150px !important']).'</td>';
             echo $form->field($v, "[$index]students_id", [
                 'template' => "{input}",
                 'options' => ['tag' => false]

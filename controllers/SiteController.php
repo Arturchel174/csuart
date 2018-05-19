@@ -44,7 +44,100 @@ class SiteController extends Controller
         ];
     }
 
+    public function actionPtable(){
+          $subject = Subject::find()->select(['subject', 'id'])->indexBy('id')->column();
+        return $this->render('ptable', [
+            'subject' => $subject, 'post_id'
+        ]);
+    }
+    public function actionPp($id = null){
+      $subject1 = Visit::find()
+             ->where(['subject_id' => $id,])
+             ->select(['students_id'])
+             ->column();
 
+      $subject14 = Visit::find()
+             ->where(['subject_id' => $id,])
+             ->select(['id'])
+             ->column();
+
+      $students=$subject14;
+
+
+      $subject4=$id;
+      $id=$subject1;
+      $subject = Students::find()
+              ->where(['id' => $id,])
+              ->select(["CONCAT(name, ' ',sur_name, ' ',patronymic_name)", 'id'])
+              ->column();
+      $id=$subject4;
+      $subject3 = Visit::find()
+                ->where(['subject_id' => $id,])
+                ->select(["plus_id"])
+                ->column();
+      $id=$subject3;
+
+      $subject2 = Plus::find()
+              ->where(['id' => $id,])
+              ->select(['operation'])
+              ->column();
+
+      $data = [];
+
+      foreach ($students as $value)
+      {
+        $model = new Visit;
+        $model->students_id = $value;
+        $model->plus_id = $value;
+        $data[] = $model;
+      }
+
+      print_r($data);
+
+    //  return $this -> render('pp', compact('subject','subject2'));
+    }
+
+    public function actionPrtable(){
+          $teach = Teacher::find()->select(["CONCAT(teacher_sur_name, ' ',teacher_name, ' ',teacher_patronymic_name)", 'id'])->indexBy('id')->column();
+        return $this->render('prtable', [
+            'teach' => $teach, 'post_id'
+        ]);
+    }
+
+    public function actionGtable(){
+          $group = Group::find()->select(['group', 'id'])->indexBy('id')->column();
+        return $this->render('gtable', [
+            'group' => $group, 'post_id'
+        ]);
+    }
+    public function actionPr($id = null){
+      $teach = Teacher::find()
+             ->where(['id' => $id,])
+             ->select(["CONCAT(teacher_sur_name, ' ',teacher_name, ' ',teacher_patronymic_name)", 'id'])
+             ->column();
+      return $this -> render('pr', compact('teach'));
+    }
+   public function actionGg($id = null){
+     $student = Students::find()
+            ->where(['group_id' => $id,])->all();
+            //->select(["CONCAT(name, ' ',sur_name, ' ',patronymic_name)", 'id'])
+            //->column();
+     //$group = Group::findOne($id);
+     //$student = $group->students;
+     // $student = Students::find()
+     //    ->select(['group_id'])
+     //    ->orderBy('id')
+     //    ->all();
+     // $student = Students::find($id)->select(["CONCAT(name, ' ',sur_name, ' ',patronymic_name)", 'id'])->indexBy($id)->column();
+     //$student = Students::find()->where(['group_id'=>$id])->all();
+
+     return $this -> render('gg', compact('student'));
+   }
+   public function actionSt($id = null)
+   {
+		$student = Students::findOne($id);  
+		return $this -> render('st', compact('student'));
+   }
     public function actions()
     {
         return [
@@ -110,12 +203,19 @@ class SiteController extends Controller
         $model = new ContactForm();
         if ($model->load(Yii::$app->request->post()) && $model->contact(Yii::$app->params['adminEmail'])) {
             Yii::$app->session->setFlash('contactFormSubmitted');
+
             return $this->refresh();
         }
-        return $this->render('contact', ['model' => $model,]);
+        return $this->render('contact', [
+            'model' => $model,
+        ]);
     }
 
-
+    /**
+     * Displays about page.
+     *
+     * @return string
+     */
     public function actionAbout()
     {
         return $this->render('about');
