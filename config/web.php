@@ -4,6 +4,8 @@ $params = require __DIR__ . '/params.php';
 $db = require __DIR__ . '/db.php';
 $db1 = require __DIR__ . '/db1.php';
 
+use alexeevdv\sms\provider\SmsRuProvider;
+use alexeevdv\sms\Sms;
 
 $config = [
     'id' => 'basic',
@@ -26,10 +28,10 @@ $config = [
     ],
     'components' => [
         'sms' => [
-            'class' => "alexeevdv\sms\Sms",
+            'class' => Sms::class,
             'provider' => [
-                'class' => "alexeevdv\sms\provider\SmsRuProvider",
-                'api_id' => '09C6EF4F-83A2-5C97-288B-5110B48C6503',
+                'class' => SmsRuProvider::class,
+                'api_id' => '',
             ],
         ],
         'request' => [
