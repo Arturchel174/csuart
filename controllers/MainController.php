@@ -16,8 +16,6 @@ use app\models\Plus;
 use app\models\Visit;
 use app\models\Teacher;
 use app\models\Subject;
-use alexeevdv\sms\provider\SmsRuProvider;
-use alexeevdv\sms\Sms;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\helpers\ArrayHelper;
@@ -175,7 +173,14 @@ class MainController extends Controller
 
 
 
+   /* 
+            $result = Yii::$app->sms->send(new Sms([
+                "to" => "9193274458",
+                "text" => "Hello my friend!",
+            ]));*/
+            //$response = \Yii::$app->sms->send(new Sms(["to" => "+9193274458","text" => "2334",]));
 
+            //echo $response->code;
 
     public function actionFinish()
     {
@@ -188,18 +193,17 @@ class MainController extends Controller
             $sms_teacher = $teacher_table->teacher_phone_number;
 
             $code = Yii::$app->session->get('code');
-           // $result = Yii::$app->sms->send('9193274458', 'Hi there!');
-            $result = Yii::$app->sms->send(new Sms([
-                "to" => "9193274458",
-                "text" => "Hello my friend!",
-            ]));
-            //$response = \Yii::$app->sms->send(new Sms(["to" => "+9193274458","text" => "2334",]));
+			$result = Yii::$app->sms->send($sms_teacher, $code);
+			if($result == 1)
+			{
+				return Yii::$app->runAction('main/create');
+			}
+			else{
+				echo "Error";
+				}
 
-            //echo $response->code;
-
-            echo $result;
-
-            return Yii::$app->runAction('main/create');
+          
+            
         }
 
         if(!empty($_REQUEST['back']))
