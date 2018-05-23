@@ -26,35 +26,17 @@ $config = [
     ],
     'components' => [
         'sms' => [
-            'class' => 'lowbase\sms\Sms',
-            'cascade' => true,
-            'services' => [
-                // http://iqsms.ru/api/api_rest/
-                'iqsmsc_ru' => [
-                    'class' => 'lowbase\sms\services\IqmscRuService',
-                    'login' => '',
-                    'password' => '',
-                    'order' => 2,
-                ],
-//                // http://iqsms.ru/api/api_rest/
-//                'iqsmsc_ru_2' => [
-//                    'class' => 'lowbase\sms\services\IqmscRuService',
-//                    'login' => '...',
-//                    'password' => '...',
-//                    'order' => 3,
-//                ],
-                // http://smsc.ru/api/
-//                'smsc_ru' => [
-//                    'class' => 'lowbase\sms\services\SmscRuService',
-//                    'login' => '...',
-//                    'password' => '...',
-//                    'order' => 1
-//                ],
-            ]
+            'class' => "alexeevdv\sms\Sms",
+            'provider' => [
+                'class' => "alexeevdv\sms\provider\SmsRuProvider",
+                'api_id' => '09C6EF4F-83A2-5C97-288B-5110B48C6503',
+            ],
         ],
         'request' => [
+
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
             'cookieValidationKey' => md5('asdFw42Q'),
+            //'baseUrl'=> '',
         ],
         'cache' => [
             'class' => 'yii\caching\FileCache',
