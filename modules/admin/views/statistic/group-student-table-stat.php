@@ -42,9 +42,10 @@ echo '</div>';
 <div class="col-lg-5" style="position: relative;float:left; margin-left:10px;">
 <h1 style="margin-top:0px;"><?= $studentstat->fio ?></h1>
 <h3><?= 'Общая посещаемость - </br>'.$studentstat->total ?></h3>
-<?php foreach($studentstat->subjects as $x) : ?>
+<?php foreach($studentstat->subjects as $subject1) : ?>
 	<?=
-	$x->subject
+	$subject1->subject;
+    echo ' '.$studentstat->totalSubject($subject1['id']);
 	?><br />
 <?php endforeach; ?>
 </div>
