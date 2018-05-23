@@ -20,7 +20,7 @@ $this->title = 'Панель';
                     <li>Хамидулин Артур</li>
                     <li>Твердохлеб Константин</li>
                     <li>Таубенфедер Никита</li>
-                    <li style="text-decoration:line-through";>Баландин Александр</li>
+                    <li>Баландин Александр</li>
                 </ul>
             </div>
         </div>
